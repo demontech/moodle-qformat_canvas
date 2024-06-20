@@ -50,10 +50,15 @@ class qformat_canvas extends qformat_based_on_xml {
      * @param $lines array of lines from the input file.
      * @return array (of objects) questions objects.
      */
+    // Function to work on PHPv8
     public function readquestions($lines) {
-        question_bank::get_qtype('multianswer'); // Ensure the multianswer code is loaded.
-        $text = implode($lines, ' ');
-        unset($lines);
+    question_bank::get_qtype('multianswer'); // Ensure the multianswer code is loaded.
+    if (!is_array($lines)) {
+        // Handle the case where $lines is not an array, if necessary.
+        throw new InvalidArgumentException('Expected $lines to be an array.');
+    }
+    $text = implode(' ', $lines);
+    unset($lines);
         // This converts xml to big nasty data structure,
         // the 0 means keep white space as it is.
         try {
